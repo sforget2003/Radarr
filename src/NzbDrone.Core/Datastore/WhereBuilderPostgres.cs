@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Datastore
             // Only use the SQL condition if the expression didn't resolve to an actual value
             if (tableName != null && !gotValue)
             {
-                _sb.Append($"\"{tableName}\".\"{expression.Member.Name}\"");
+                _sb.Append($"\"{tableName}\".\"{expression.Member.Name.ToLower()}\"");
             }
             else
             {
@@ -315,20 +315,7 @@ namespace NzbDrone.Core.Datastore
 
             _sb.Append(" = ANY (");
 
-            // hardcode the integer list if it exists to bypass parameter limit
-            if (item.Type == typeof(int) && TryGetRightValue(list, out var value))
-            {
-                var items = (IEnumerable<int>)value;
-                _sb.Append('(');
-                _sb.Append(string.Join(", ", items));
-                _sb.Append(')');
-
-                _gotConcreteValue = true;
-            }
-            else
-            {
-                Visit(list);
-            }
+            Visit(list);
 
             _sb.Append("))");
         }
