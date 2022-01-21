@@ -423,6 +423,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     .SetSegment("route", "search")
                     .AddQueryParam("q", searchTerm)
                     .AddQueryParam("year", yearTerm)
+                    .AddQueryParam("include_adult", true)
                     .Build();
 
                 request.AllowAutoRedirect = true;
